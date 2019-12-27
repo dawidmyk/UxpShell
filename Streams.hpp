@@ -1,9 +1,10 @@
+#pragma once
 #include <unistd.h>
 #include <memory>
 
 class AbstractStream {
 	public:
-	virtual void child() = 0;
+	virtual char child() = 0;
 	virtual void parent() = 0;
 };
 
@@ -19,7 +20,7 @@ class WriteStream : public InputStream {
 	public:
 	WriteStream(const std::string & output): output(output) {}
 	
-	void child();
+	char child();
 	
 	void parent() {
 	}
@@ -34,7 +35,7 @@ class PipeInputStream : public InputStream {
 	
 	PipeInputStream(int fd): fd(fd) {}
 	
-	void child();
+	char child();
 	
 	void parent() {
 		close(fd);
@@ -50,7 +51,7 @@ class PipeOutputStream : public OutputStream {
 	
 	PipeOutputStream(int fd): fd(fd) {}
 	
-	void child();
+	char child();
 	
 	void parent() {
 		close(fd);
@@ -65,7 +66,7 @@ class FileInputStream : public InputStream {
 	 
 	 FileInputStream(const std::string & filename): filename(filename) {}
 	 
-	 void child();
+	 char child();
 	 
 	 void parent() {
 	 }
@@ -74,12 +75,13 @@ class FileInputStream : public InputStream {
 
 class FileOutputStream : public OutputStream {
 	 std::string filename;
+	 bool append;
 	
 	 public:
 	 
-	 FileOutputStream(const std::string & filename): filename(filename) {}
+	 FileOutputStream(const std::string & filename, bool append): filename(filename), append(append) {}
 	 
-	 void child();
+	 char child();
 	 
 	 void parent() {
 	 }

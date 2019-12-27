@@ -1,8 +1,10 @@
+#pragma once
 #include "Routine.hpp"
 #include <cstring>
 #include <sys/wait.h>
 
-
+//Zastosowano rozwiązanie bałaganowe
+//w budowaniu potoków
 
 	
 std::vector<char *> Process::prepare_exec() {
@@ -26,20 +28,38 @@ std::vector<char *> Process::prepare_exec() {
 }
 
 
-void Process::spawn() {
+char Process::spawn() {
 	id = fork();
+	if(id < 0) return 0;
+	if(input) {
+		if(id == 0) {
+			if(!input->child()) {
+				fprintf(stderr, "Dzieciak wyskakuje w input\n");
+				exit(1);
+			}
+		}
+		else {
+			input->parent();
+		}
+	}
+	if(output) {
+		if(id == 0) {
+			if(!output->child()) {
+				fprintf(stderr, "Dzieciak wyskakuje w output\n");
+				exit(1);
+			}
+		}
+		else {
+			output->parent();
+		}
+	}
 	if(id == 0) {
-		input->child();
-		output->child();
 		execvp(name.c_str(), prepare_exec().data());
+		fprintf(stderr, "Dzieciak wyskakuje w exec\n");
+		exit(1);
 	}
-	else if(id > 0) {
-		input->parent();
-		output->parent();
-	}
-	else {
-		//bład
-	}
+
+	return 1;
 }
 
 int Process::join() {
@@ -53,16 +73,28 @@ int Process::join() {
 
 
 
-void Pipeline::spawn() {
-	auto it = processes.begin();
+char Pipeline::spawn() {
+	auto begin = processes.begin();
 	auto end = processes.end();
-	end--;
-	while(it != end) {
+	auto it = begin;
+	auto prev_end = end;
+	prev_end--;
+	while(it != prev_end) {
 		StreamConnector pair;
 		(*it)->setOutput(pair.getOutput());
 		it++;
 		(*it)->setInput(pair.getInput());
 	}
+	it = begin;
+	char i = 1;
+	while(it != end) {
+		char now_i;
+		now_i = (*it)->spawn();
+		if(now_i == 0) i = 0;
+		it++;
+	}
+	return i;
+	
 }
 
 int Pipeline::join() {
@@ -75,6 +107,9 @@ int Pipeline::join() {
 	}
 	return ret;
 }
-	
+
+//Pozostaje dylemat co zrobić gdy błąd zostanie wykryty pomiędzy
+//fork-exec
+//ten który zbłądzi powinien pokierować
 	
 		 

@@ -1,9 +1,10 @@
+#pragma once
 #include "Streams.hpp"
 #include <vector>
 
 class Routine {
 	public:
-	virtual void spawn() = 0;
+	virtual char spawn() = 0;
 	virtual int join() = 0;
 	virtual void setInput(std::unique_ptr<InputStream> stream) = 0;
 	virtual void setOutput(std::unique_ptr<OutputStream> stream) = 0;
@@ -15,8 +16,8 @@ class Routine {
 	void inputFile(const std::string & filename) {
 		setInput(std::unique_ptr<InputStream>(new FileInputStream(filename)));
 	}
-	void outputFile(const std::string & filename) {
-		setOutput(std::unique_ptr<OutputStream>(new FileOutputStream(filename)));
+	void outputFile(const std::string & filename, bool append) {
+		setOutput(std::unique_ptr<OutputStream>(new FileOutputStream(filename, append)));
 	}
 	//background / foreground nie dodaje bo to działka kogoś innego
 };
@@ -56,7 +57,7 @@ class Process : public Routine {
    
    public:
    
-   void spawn();
+   char spawn();
 	
 	int join();
 	
@@ -72,7 +73,7 @@ class Pipeline : public Routine {
 	public:
 	
 	void addProcess(std::unique_ptr<Process> process) {
-		processes.push_back(process);
+		processes.push_back(std::move(process));
 	}
 	
 	//minimalna długość pipelin'u to 2 procesy i o to trzeba zadbać gdzieś indziej
@@ -84,7 +85,7 @@ class Pipeline : public Routine {
 		processes.at(processes.size() - 1)->setOutput(std::move(stream));
 	}
 	
-	void spawn();
+	char spawn();
 	
 	int join();
 		
