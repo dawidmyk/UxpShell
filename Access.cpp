@@ -1,27 +1,27 @@
 #include <unistd.h>
-char checkExecAccess(const std::string & filename, const std::string & path, char dir) {
+std::pair<std::string, char> checkExecAccess(const std::string & filename, const std::string & path, char dir) {
 	if(filename.empty()) return -1;
 	if(filename.find('/') != std::string::npos)
 	{
-		return checkAccess(filename, 3);
+		return std::pair<std::string, char>(filaname, checkAccess(filename, 3));
 	}
 	char * dup = strdup(path.c_str());
-	char * result = strtok(dup, ":");
+	char * rest = dup;
+	char * result;
 	char globalCond = 1;
-	do {
+	while((result = strtok_r(rest, ":", &rest)) != nullptr) {
 		std::string str_result(result);
 		str_result += "/" + filename;
 		char cond = checkAccess(str_result, 3);
 		if(cond == 0) {
 			//można tam też dodać 2
 			free(dup);
-			return cond;
+			return std::pair<std::string, char>(filaname, cond);
 		}
 		if(cond == 2) globalCond = 2;
-		result = strtok(nullptr, ":");
-	} while(result != nullptr);
+	}
 	free(dup);
-	return globalCond;
+	return std::pair<std::string, char>(std::string(""), globalCond);
 }
 	
 		
