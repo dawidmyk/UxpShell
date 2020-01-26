@@ -32,6 +32,18 @@ class Routine {
 		if(accessError) return accessError;
 		setOutput(std::unique_ptr<OutputStream>(new FileOutputStream(filename, append)));
 	}
+	
+	std::unique_ptr<OutputStream> regularInput() {
+		StreamConnector pair;
+		setInput(pair.getInput());
+		return pair.getOutput();
+	}
+	
+	std::unique_ptr<InputStream> regularOutput() {
+		StreamConnector pair;
+		setOutput(pair.getOutput());
+		return pair.getInput();
+	}
 	//background / foreground nie dodaje bo to działka kogoś innego
 };
 
@@ -63,7 +75,7 @@ class Process : public Routine {
 	void setOutput(std::unique_ptr<OutputStream> stream) {
 		output = std::move(stream);
 	}
-	
+
 	char check();
 	
 	private:
