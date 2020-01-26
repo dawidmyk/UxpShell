@@ -1,9 +1,12 @@
+#include "Access.hpp"
 #include <unistd.h>
-std::pair<std::string, char> checkExecAccess(const std::string & filename, const std::string & path, char dir) {
-	if(filename.empty()) return -1;
+#include <errno.h>
+#include <string.h>
+std::pair<std::string, char> checkExecAccess(const std::string & filename, const std::string & path) {
+	if(filename.empty()) return std::pair<std::string, char>(std::string(""), -1);
 	if(filename.find('/') != std::string::npos)
 	{
-		return std::pair<std::string, char>(filaname, checkAccess(filename, 3));
+		return std::pair<std::string, char>(filename, checkAccess(filename, 3));
 	}
 	char * dup = strdup(path.c_str());
 	char * rest = dup;
@@ -16,7 +19,7 @@ std::pair<std::string, char> checkExecAccess(const std::string & filename, const
 		if(cond == 0) {
 			//można tam też dodać 2
 			free(dup);
-			return std::pair<std::string, char>(filaname, cond);
+			return std::pair<std::string, char>(str_result, cond);
 		}
 		if(cond == 2) globalCond = 2;
 	}
@@ -48,7 +51,7 @@ char checkAccess(const std::string & filename, char dir) {
 	}
 	int result = access(filename.c_str(), flag);
 	if(result == -1) {
-		if(errno == EACCESS) return 2;
+		if(errno == EACCES) return 2;
 		if(errno == ENOENT) return 1;
 	}
 	return 0; 

@@ -1,8 +1,9 @@
 #include "Routine.cpp"
 #include "Streams.cpp"
+#include "Access.cpp"
 
 int main() {
-	Process i("./tested");
+	Process i("tested");
 	
 	i.addArg("takis");
 	i.addArg("niejaki");

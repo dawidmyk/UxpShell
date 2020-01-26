@@ -54,7 +54,7 @@ char Process::spawn() {
 		}
 	}
 	if(id == 0) {
-		execvp(name.c_str(), prepare_exec().data());
+		execv(name.c_str(), prepare_exec().data());
 		fprintf(stderr, "Dzieciak wyskakuje w exec\n");
 		exit(1);
 	}
