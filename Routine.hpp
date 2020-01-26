@@ -33,16 +33,17 @@ class Routine {
 		setOutput(std::unique_ptr<OutputStream>(new FileOutputStream(filename, append)));
 	}
 	
-	std::unique_ptr<OutputStream> regularInput() {
+	std::unique_ptr<PipeOutputStream> regularInput() {
 		StreamConnector pair;
 		setInput(pair.getInput());
-		return pair.getOutput();
+		return std::unique_ptr<PipeOutputStream>((PipeOutputStream *)pair.getOutput().get());
+
 	}
 	
-	std::unique_ptr<InputStream> regularOutput() {
+	std::unique_ptr<PipeInputStream> regularOutput() {
 		StreamConnector pair;
 		setOutput(pair.getOutput());
-		return pair.getInput();
+		return std::unique_ptr<PipeInputStream>((PipeInputStream *)pair.getInput().get());
 	}
 	//background / foreground nie dodaje bo to działka kogoś innego
 };

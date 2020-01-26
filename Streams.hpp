@@ -41,6 +41,10 @@ class PipeInputStream : public InputStream {
 		close(fd);
 	}
 	
+	void readChar(char & i) {
+		read(fd, &i, 1);
+	}
+	
 };
 
 class PipeOutputStream : public OutputStream {
@@ -55,6 +59,10 @@ class PipeOutputStream : public OutputStream {
 	
 	void parent() {
 		close(fd);
+	}
+	
+	void writeChar(char i) {
+		write(fd, &i, 1);
 	}
 	
 };
