@@ -8,15 +8,25 @@ class Routine {
 	virtual int join() = 0;
 	virtual void setInput(std::unique_ptr<InputStream> stream) = 0;
 	virtual void setOutput(std::unique_ptr<OutputStream> stream) = 0;
+	void blockInput() {
+		inputFile("/dev/null");
+	}
+	void blockOutput() {
+		outputFile("/dev/null", false);
+	}
 	
 	void write(const std::string & output) {
 		setInput(std::unique_ptr<InputStream>(new WriteStream(output)));
 	}
 	
-	void inputFile(const std::string & filename) {
+	char inputFile(const std::string & filename) {
+		char accessError = checkAccess(filename, 0);
+		if(accessError) return accessError;
 		setInput(std::unique_ptr<InputStream>(new FileInputStream(filename)));
 	}
-	void outputFile(const std::string & filename, bool append) {
+	char outputFile(const std::string & filename, bool append) {
+		char accessError = checkAccess(filename, 1 + append);
+		if(accessError) return accessError;
 		setOutput(std::unique_ptr<OutputStream>(new FileOutputStream(filename, append)));
 	}
 	//background / foreground nie dodaje bo to działka kogoś innego
