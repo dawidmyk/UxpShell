@@ -3,6 +3,7 @@
 #include "Access.hpp"
 
 #include <vector>
+#include "Access.cpp"
 
 class Routine {
 	public:
@@ -11,11 +12,22 @@ class Routine {
 	virtual int join() = 0;
 	virtual void setInput(std::unique_ptr<InputStream> stream) = 0;
 	virtual void setOutput(std::unique_ptr<OutputStream> stream) = 0;
+	
 	void blockInput() {
+		backupInput();
 		inputFile("/dev/null");
 	}
 	void blockOutput() {
+		backupOutput();
 		outputFile("/dev/null", false);
+	}
+
+	void unblockInput() {
+		setInput(restoreInput());
+	}
+
+	void unblockOutput() {
+		setOutput(restoreOutput());
 	}
 	
 	void write(const std::string & output) {
@@ -50,6 +62,14 @@ class Routine {
 
 	virtual void sendToForeground();
 
+	virtual void backupInput();
+
+	virtual void backupOutput();
+
+	virtual std::unique_ptr<InputStream> restoreInput();
+
+	virtual std::unique_ptr<OutputStream> restoreOutput();
+
 	//background / foreground nie dodaje bo to działka kogoś innego
 };
 
@@ -58,8 +78,8 @@ class Process : public Routine {
 	pid_t id;
 	std::string name;
 	std::vector<std::string> args;
-	std::unique_ptr<InputStream> input;
-	std::unique_ptr<OutputStream> output;
+	std::unique_ptr<InputStream> cur_input, org_input;
+	std::unique_ptr<OutputStream> cur_output, org_output;
 	
 	public:
 	
@@ -75,15 +95,32 @@ class Process : public Routine {
 	}
 	
 	void setInput(std::unique_ptr<InputStream> stream) {
-		input = std::move(stream);
+		cur_input = std::move(stream);
 	}
 	
 	void setOutput(std::unique_ptr<OutputStream> stream) {
-		output = std::move(stream);
+		cur_output = std::move(stream);
+	}
+
+	std::unique_ptr<InputStream> restoreInput() {
+		return std::move(org_input);
+	}
+
+	std::unique_ptr<OutputStream> restoreOutput() {
+		return std::move(org_output);
 	}
 
 	char check();
 	
+	void backupInput() {
+		org_input = std::move(cur_input);	
+	}
+
+	void backupOutput() {
+		org_output = std::move(cur_output);
+	}
+
+
 	void sendToBackground() override;
 
 	void sendToForeground() override;
@@ -120,6 +157,14 @@ class Pipeline : public Routine {
 	
 	void setOutput(std::unique_ptr<OutputStream> stream) {
 		processes.at(processes.size() - 1)->setOutput(std::move(stream));
+	}
+
+	std::unique_ptr<InputStream> restoreInput() {
+		return processes.at(0)->restoreInput();
+	}
+
+	std::unique_ptr<OutputStream> restoreOutput() {
+		return processes.at(processes.size() - 1)->restoreOutput();
 	}
 	
 	char spawn();

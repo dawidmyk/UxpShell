@@ -31,26 +31,26 @@ std::vector<char *> Process::prepare_exec() {
 char Process::spawn() {
 	id = fork();
 	if(id < 0) return 0;
-	if(input) {
+	if(cur_input) {
 		if(id == 0) {
-			if(!input->child()) {
+			if(!cur_input->child()) {
 				fprintf(stderr, "Dzieciak wyskakuje w input\n");
 				exit(1);
 			}
 		}
 		else {
-			input->parent();
+			cur_input->parent();
 		}
 	}
-	if(output) {
+	if(cur_output) {
 		if(id == 0) {
-			if(!output->child()) {
+			if(!cur_output->child()) {
 				fprintf(stderr, "Dzieciak wyskakuje w output\n");
 				exit(1);
 			}
 		}
 		else {
-			output->parent();
+			cur_output->parent();
 		}
 	}
 	if(id == 0) {
@@ -126,33 +126,34 @@ char Pipeline::check() {
 		 
 void Pipeline::sendToBackground() {
 	
-	// processes.front()->block();
-	processes.back;
+	auto first = processes.begin()->get();
+	auto last = processes.end()->get();
+
+	first->backupInput();
+	last->backupOutput();
+	first->blockInput();
+	last->blockOutput();
 }
 
 void Pipeline::sendToForeground() {
-
-	auto it = processes.begin();
-	auto end = processes.end();
 	
-	for(it; it != end; ++it) {
-		it->get()->sendToForeground();
-	}
+	auto first = processes.begin()->get();
+	auto last = processes.end()->get();
+	
+	first->unblockInput();
+	last->unblockOutput();
 }
 
 void Process::sendToBackground() {
 
-	// if(kill(-id, SIGCONT) < 0) {
-	// 	fprintf(stderr, "bg %d: Job not found\n", id);
-	// 	return;
-	// }
-	// stdin
+	backupInput();
+	backupOutput();
+	blockInput();
+	blockOutput();
 }
 
 void Process::sendToForeground() {
 	
-	if(kill(-id, SIGCONT) < 0) {
-		fprintf(stderr, "fg %d: Job not found\n", id);
-		return;
-	}
+	unblockInput();
+	unblockOutput();
 }
