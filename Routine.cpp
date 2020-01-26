@@ -108,8 +108,19 @@ int Pipeline::join() {
 	return ret;
 }
 
-//Pozostaje dylemat co zrobić gdy błąd zostanie wykryty pomiędzy
-//fork-exec
-//ten który zbłądzi powinien pokierować
+char Process::check() {
+		std::string path(getenv("PATH")); //ona może być też przekazana jako argument
+		std::pair<std::string, char> result = checkExecAccess(name, path);
+		if(result.second == 0) name = result.first;
+		return result.second;
+}
+
+char Pipeline::check() {
+	for(auto & proc : processes) {
+		char i = proc->check();
+		if(i != 0) return i;
+	}
+}
+
 	
 		 

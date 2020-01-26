@@ -6,6 +6,7 @@
 
 class Routine {
 	public:
+	virtual char check() = 0;
 	virtual char spawn() = 0;
 	virtual int join() = 0;
 	virtual void setInput(std::unique_ptr<InputStream> stream) = 0;
@@ -63,6 +64,8 @@ class Process : public Routine {
 		output = std::move(stream);
 	}
 	
+	char check();
+	
 	private:
 	
 	std::vector<char *> prepare_exec();
@@ -100,7 +103,9 @@ class Pipeline : public Routine {
 	char spawn();
 	
 	int join();
-		
+	
+	char check();
+	
 };
 	
 	

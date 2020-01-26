@@ -1,9 +1,13 @@
 #include "Routine.cpp"
 #include "Streams.cpp"
 #include "Access.cpp"
+#include <iostream>
 
 int main() {
 	Process i("tested");
+	
+	char k = i.check();
+	std::cout << "Udało się?" << (int)k << std::endl;
 	
 	i.addArg("takis");
 	i.addArg("niejaki");
