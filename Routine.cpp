@@ -124,3 +124,35 @@ char Pipeline::check() {
 
 	
 		 
+void Pipeline::sendToBackground() {
+	
+	// processes.front()->block();
+	processes.back;
+}
+
+void Pipeline::sendToForeground() {
+
+	auto it = processes.begin();
+	auto end = processes.end();
+	
+	for(it; it != end; ++it) {
+		it->get()->sendToForeground();
+	}
+}
+
+void Process::sendToBackground() {
+
+	// if(kill(-id, SIGCONT) < 0) {
+	// 	fprintf(stderr, "bg %d: Job not found\n", id);
+	// 	return;
+	// }
+	// stdin
+}
+
+void Process::sendToForeground() {
+	
+	if(kill(-id, SIGCONT) < 0) {
+		fprintf(stderr, "fg %d: Job not found\n", id);
+		return;
+	}
+}

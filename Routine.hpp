@@ -45,6 +45,11 @@ class Routine {
 		setOutput(pair.getOutput());
 		return std::unique_ptr<PipeInputStream>((PipeInputStream *)pair.getInput().get());
 	}
+
+	virtual void sendToBackground();
+
+	virtual void sendToForeground();
+
 	//background / foreground nie dodaje bo to działka kogoś innego
 };
 
@@ -79,13 +84,17 @@ class Process : public Routine {
 
 	char check();
 	
+	void sendToBackground() override;
+
+	void sendToForeground() override;
+
 	private:
 	
 	std::vector<char *> prepare_exec();
    
-   public:
+  	public:
    
-   char spawn();
+   	char spawn();
 	
 	int join();
 	
@@ -119,7 +128,19 @@ class Pipeline : public Routine {
 	
 	char check();
 	
+// };
+	
+	
+	void sendToBackground() override;
+
+	void sendToForeground() override;
 };
-	
-	
-		 
+
+// struct job {
+//     int id;
+//     struct process *root;
+//     char *command;
+//     pid_t pgid;
+//     int mode;
+// };
+// std::vector<std::string> args;
