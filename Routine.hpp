@@ -19,6 +19,11 @@ class Routine {
 	void outputFile(const std::string & filename, bool append) {
 		setOutput(std::unique_ptr<OutputStream>(new FileOutputStream(filename, append)));
 	}
+
+	virtual void sendToBackground();
+
+	virtual void sendToForeground();
+
 	//background / foreground nie dodaje bo to działka kogoś innego
 };
 
@@ -51,13 +56,17 @@ class Process : public Routine {
 		output = std::move(stream);
 	}
 	
+	void sendToBackground() override;
+
+	void sendToForeground() override;
+
 	private:
 	
 	std::vector<char *> prepare_exec();
    
-   public:
+  	public:
    
-   char spawn();
+   	char spawn();
 	
 	int join();
 	
@@ -88,8 +97,17 @@ class Pipeline : public Routine {
 	char spawn();
 	
 	int join();
-		
+	
+	void sendToBackground() override;
+
+	void sendToForeground() override;
 };
-	
-	
-		 
+
+// struct job {
+//     int id;
+//     struct process *root;
+//     char *command;
+//     pid_t pgid;
+//     int mode;
+// };
+// std::vector<std::string> args;
