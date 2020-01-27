@@ -1,0 +1,3 @@
+/home/alex/Desktop/UXP1A/UxpShell/cmake/CMakeFiles/rebuild_cache.dir
+/home/alex/Desktop/UXP1A/UxpShell/cmake/CMakeFiles/Shell.dir
+/home/alex/Desktop/UXP1A/UxpShell/cmake/CMakeFiles/edit_cache.dir

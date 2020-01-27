@@ -1,0 +1,37 @@
+[
+{
+  "directory": "/home/alex/Desktop/UXP1A/UxpShell/build",
+  "command": "/usr/bin/c++    -pthread -g   -std=gnu++11 -o CMakeFiles/Shell.dir/Access.cpp.o -c /home/alex/Desktop/UXP1A/UxpShell/Access.cpp",
+  "file": "/home/alex/Desktop/UXP1A/UxpShell/Access.cpp"
+},
+{
+  "directory": "/home/alex/Desktop/UXP1A/UxpShell/build",
+  "command": "/usr/bin/c++    -pthread -g   -std=gnu++11 -o CMakeFiles/Shell.dir/PipelineContext.cpp.o -c /home/alex/Desktop/UXP1A/UxpShell/PipelineContext.cpp",
+  "file": "/home/alex/Desktop/UXP1A/UxpShell/PipelineContext.cpp"
+},
+{
+  "directory": "/home/alex/Desktop/UXP1A/UxpShell/build",
+  "command": "/usr/bin/c++    -pthread -g   -std=gnu++11 -o CMakeFiles/Shell.dir/Routine.cpp.o -c /home/alex/Desktop/UXP1A/UxpShell/Routine.cpp",
+  "file": "/home/alex/Desktop/UXP1A/UxpShell/Routine.cpp"
+},
+{
+  "directory": "/home/alex/Desktop/UXP1A/UxpShell/build",
+  "command": "/usr/bin/c++    -pthread -g   -std=gnu++11 -o CMakeFiles/Shell.dir/Shell.cpp.o -c /home/alex/Desktop/UXP1A/UxpShell/Shell.cpp",
+  "file": "/home/alex/Desktop/UXP1A/UxpShell/Shell.cpp"
+},
+{
+  "directory": "/home/alex/Desktop/UXP1A/UxpShell/build",
+  "command": "/usr/bin/c++    -pthread -g   -std=gnu++11 -o CMakeFiles/Shell.dir/Streams.cpp.o -c /home/alex/Desktop/UXP1A/UxpShell/Streams.cpp",
+  "file": "/home/alex/Desktop/UXP1A/UxpShell/Streams.cpp"
+},
+{
+  "directory": "/home/alex/Desktop/UXP1A/UxpShell/build",
+  "command": "/usr/bin/c++    -pthread -g   -std=gnu++11 -o CMakeFiles/Shell.dir/echo.cpp.o -c /home/alex/Desktop/UXP1A/UxpShell/echo.cpp",
+  "file": "/home/alex/Desktop/UXP1A/UxpShell/echo.cpp"
+},
+{
+  "directory": "/home/alex/Desktop/UXP1A/UxpShell/build",
+  "command": "/usr/bin/c++    -pthread -g   -std=gnu++11 -o CMakeFiles/Shell.dir/main.cpp.o -c /home/alex/Desktop/UXP1A/UxpShell/main.cpp",
+  "file": "/home/alex/Desktop/UXP1A/UxpShell/main.cpp"
+}
+]
