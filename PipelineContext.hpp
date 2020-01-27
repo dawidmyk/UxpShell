@@ -22,6 +22,10 @@ class PipelineContext {
 	PipelineError check() {
 		return error;
 	}
+	
+	void join() {
+		if(joining->joinable()) joining->join();
+	}
 		
 			
 	void create(CommandParseContext & cont, const std::string & path);
