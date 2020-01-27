@@ -106,6 +106,10 @@ class Process : public Routine {
 		return std::move(org_input);
 	}
 
+	// std::unique_ptr<OutputStream> restoreOutput() {
+	// 	return std::move(org_output);
+	// }
+
 	std::unique_ptr<OutputStream> restoreOutput() {
 		return std::move(org_output);
 	}
