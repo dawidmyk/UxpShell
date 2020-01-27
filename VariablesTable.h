@@ -1,6 +1,4 @@
 /*
-	Tutaj nie ma wiêkszej filozofii. Tablica trzymaj¹ca hashmapê i interfejs dostêpu. 
-	
 	Struktura zawieraj¹ca zmienne systemowe w postaci hasmapy identyfikowanej przez nazwê zmiennej
 	Ka¿da zmienna reprezentowana jest przez klasê Variable
 	zmienne nie maj¹ typu jako takiego. Mo¿na je inicjowaæ intem, double i stringiem u¿ywaj¹c odpowiednich metod set...()
@@ -24,7 +22,6 @@
 		set...()
 
 
-
 */
 
 
@@ -40,23 +37,28 @@ using namespace std;
 class VariablesTable
 {
 public:
+	enum env {LOCAL, GLOBAL};	
 
-	map<string, Variable*> idToVariable;
-	void exsist(string);
+	map<string, Variable*> idToVariableGlobal;
+	map<string, Variable*> idToVariableLocal;
+	bool isExsist(string, map<string, Variable*>);
 
 public:
 	VariablesTable();
 	~VariablesTable();
 
-	void addNewVariable(string);
+	void addNewVariable(string, env);
 
 	int getIntVariable(string);
 	double getDoubleVariable(string);
 	string getStringVariable(string);
 
-	void setIntValue(string, int);
-	void setDoubleValue(string, double);
-	void setStringValue(string, string);
+	void setIntValue(string, int, env);
+	void setDoubleValue(string, double, env);
+	void setStringValue(string, string, env);
 
+
+	char** getGlobalEnvironment();
+	char** getLocalEnvironment();
 };
 

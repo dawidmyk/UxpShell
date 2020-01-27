@@ -38,3 +38,4 @@ double Variable::getDoubleValue() {
 string Variable::getStringValue() {
 	return stringValue;
 }
+
