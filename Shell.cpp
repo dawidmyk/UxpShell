@@ -1,5 +1,6 @@
 #include "Shell.hpp"
 void Shell::start() {
+		alive = true;
 		outputThread.reset(new std::thread(&Shell::output, this));
 		inputThread.reset(new std::thread(&Shell::input, this));
 		circThread.reset(new std::thread(&Shell::circ, this));
@@ -28,6 +29,8 @@ void Shell::interact() {
 		while(alive) {
 			while(!isForeground) {
 				prompt();
+				char line[100];
+				fgets(line, 100, stdin);
 				//tutaj można zbudować komendę
 				//próbujemy wczytać komendę
 				//parsujemy ją

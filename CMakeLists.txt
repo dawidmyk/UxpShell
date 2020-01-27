@@ -4,6 +4,7 @@ project(Shell)
 set(CMAKE_CXX_FLAGS "-pthread")
 set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "builds")
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY_DEBUG "debug")
 
 
 file(GLOB SOURCES "*.cpp")

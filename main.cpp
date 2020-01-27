@@ -3,4 +3,5 @@
 int main() {
 	Shell shell;
 	shell.start();
+	shell.stop();
 }
