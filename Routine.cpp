@@ -1,4 +1,3 @@
-#pragma once
 #include "Routine.hpp"
 #include <cstring>
 #include <sys/wait.h>
@@ -108,18 +107,10 @@ int Pipeline::join() {
 	return ret;
 }
 
-char Process::check() {
-		std::string path(getenv("PATH")); //ona może być też przekazana jako argument
+char Process::check(const std::string & path) {
 		std::pair<std::string, char> result = checkExecAccess(name, path);
 		if(result.second == 0) name = result.first;
 		return result.second;
-}
-
-char Pipeline::check() {
-	for(auto & proc : processes) {
-		char i = proc->check();
-		if(i != 0) return i;
-	}
 }
 
 	
