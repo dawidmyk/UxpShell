@@ -1,0 +1,11 @@
+cmake_minimum_required(VERSION 3.5)
+#powyższa pewnie jednak nie wystarcza
+project(Shell)
+set(CMAKE_CXX_FLAGS "-pthread")
+set(CMAKE_CXX_STANDARD 11)
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "builds")
+
+
+file(GLOB SOURCES "*.cpp")
+add_executable(Shell ${SOURCES})
+
