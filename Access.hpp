@@ -1,3 +1,4 @@
+#pragma once
 #include <string>
 #include <utility>
 std::pair<std::string, char> checkExecAccess(const std::string & filename, const std::string & path);

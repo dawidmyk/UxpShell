@@ -3,10 +3,10 @@
 #include "Access.hpp"
 
 #include <vector>
+#include <list>
 
 class Routine {
 	public:
-	virtual char check() = 0;
 	virtual char spawn() = 0;
 	virtual int join() = 0;
 	virtual void setInput(std::unique_ptr<InputStream> stream) = 0;
@@ -65,6 +65,10 @@ class Process : public Routine {
 		this->name = name;
 	}
 	
+	std::string getName() {
+		return name;
+	}
+	
 	void addArg(const std::string & arg) {
 		args.push_back(arg);
 	}
@@ -77,7 +81,7 @@ class Process : public Routine {
 		output = std::move(stream);
 	}
 
-	char check();
+	char check(const std::string & path);
 	
 	private:
 	
@@ -96,9 +100,13 @@ class Process : public Routine {
 
 class Pipeline : public Routine {
 	
-	std::vector<std::unique_ptr<Process>> processes;
+	std::list<std::unique_ptr<Process>> processes;
 	
 	public:
+	
+	void setProcesses(std::list<std::unique_ptr<Process>> & process_list) {
+		processes = std::move(process_list);
+	}
 	
 	void addProcess(std::unique_ptr<Process> process) {
 		processes.push_back(std::move(process));
@@ -106,18 +114,20 @@ class Pipeline : public Routine {
 	
 	//minimalna długość pipelin'u to 2 procesy i o to trzeba zadbać gdzieś indziej
 	void setInput(std::unique_ptr<InputStream> stream) {
-		processes.at(0)->setInput(std::move(stream));
+		(*processes.begin())->setInput(std::move(stream));
 	}
 	
 	void setOutput(std::unique_ptr<OutputStream> stream) {
-		processes.at(processes.size() - 1)->setOutput(std::move(stream));
+		auto end = processes.end();
+		end--;
+		(*end)->setOutput(std::move(stream));
 	}
 	
 	char spawn();
 	
 	int join();
 	
-	char check();
+	char check(const std::string & path);
 	
 };
 	

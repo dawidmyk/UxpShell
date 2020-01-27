@@ -1,4 +1,3 @@
-#pragma once
 #include "Streams.hpp"
 #include <sys/stat.h>
 #include <sys/types.h>
