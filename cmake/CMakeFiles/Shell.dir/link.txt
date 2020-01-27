@@ -1,0 +1,1 @@
+/usr/bin/c++  -pthread   CMakeFiles/Shell.dir/Access.cpp.o CMakeFiles/Shell.dir/PipelineContext.cpp.o CMakeFiles/Shell.dir/Routine.cpp.o CMakeFiles/Shell.dir/Shell.cpp.o CMakeFiles/Shell.dir/Streams.cpp.o CMakeFiles/Shell.dir/echo.cpp.o CMakeFiles/Shell.dir/main.cpp.o  -o builds/Shell 
