@@ -1,9 +1,10 @@
 #include "PipelineContext.hpp"
 void PipelineContext::create
 	(CommandParseContext & cont, const std::string & path) {
+	exited = false;
 	error.occur = false;
 	pipes.setProcesses(cont.processes);
-	char fileEffect[3];
+	char fileEffect[3] = {0};
 	std::string filenames[3];
 	filenames[0] = cont.inputFile;
 	filenames[1] = cont.outputFile;

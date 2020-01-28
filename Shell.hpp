@@ -27,8 +27,15 @@ class Shell {
 	void start();
 	
 	void stop();
+	
+	void shell_exit() {
+		alive = false;
+	}
 
-
+	Shell():
+		alive(false), exited(false), isForeground(false),
+		foreground(nullptr)
+		{}
 	
 	void prompt() {
 		std::cout << "$";

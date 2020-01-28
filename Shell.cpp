@@ -1,5 +1,6 @@
 #include "Shell.hpp"
 void Shell::start() {
+		alive = true;
 		outputThread.reset(new std::thread(&Shell::output, this));
 		inputThread.reset(new std::thread(&Shell::input, this));
 		circThread.reset(new std::thread(&Shell::circ, this));
@@ -17,9 +18,13 @@ void Shell::input() {
 		while(alive) {
 			while(isForeground) { //tu będzie aktywne oczekiwanie
 				//więc warto zastosować jakiś inny mechanizm
-				char i = getchar();
-				//albo jakaś inna funkcja powyżej
-				foreground->putChar(i);
+				
+				//trzeba zrobić selectem/pollem żeby wejście było nieblokujące
+				while(isForeground) {
+					char i = getchar();
+					//albo jakaś inna funkcja powyżej
+					foreground->putChar(i);
+				}
 			}
 		}
 }
@@ -28,27 +33,41 @@ void Shell::interact() {
 		while(alive) {
 			while(!isForeground) {
 				prompt();
+				char line[100];
+				fgets(line, 100, stdin);
 				//tutaj można zbudować komendę
 				//próbujemy wczytać komendę
 				//parsujemy ją
 				bool commandAccepted = true;
 				CommandParseContext command;
+				command.type = CommandType::new_pipeline;
+				command.processes.push_back(std::unique_ptr<Process>(new Process("debug/first-tested")));
+				command.hasInput = false;
+				command.hasDirectOutput = false;
+				command.hasAppend = false;
+				command.inBackground = false;
+				
 				if(commandAccepted) { //ta zmienna tak umownie
 					if(command.type == CommandType::new_pipeline) {
 						std::unique_ptr<PipelineContext> pipe(new PipelineContext(command, vars.getPath()));
 						PipelineError error = pipe->check();
 						if(error.occur) {
-							//wyświetl informacje o błędzie
+							printf("Wystąpił błąd\n");
 						}
 						else {
 							pipe->spawnItself();
 							pipe->spawnWaiting();
+							PipelineContext * evForeground = pipe.get();
 							pipelines.push_back(std::move(pipe));
+							if(!command.inBackground) {
+								isForeground = true;
+								foreground = evForeground;
+							}
 						}
 							
 					}
 					else if(command.type == CommandType::exit) {
-						stop();
+						shell_exit();
 					}
 				}
 			}
@@ -74,6 +93,7 @@ void Shell::circ() {
 			if((*it)->exited) {
 				exited = true;
 				exitedPipeline = std::move(*it);
+				exitedPipeline->join();
 				if(exitedPipeline.get() == foreground) {
 					isForeground = false;
 					foreground = nullptr;
