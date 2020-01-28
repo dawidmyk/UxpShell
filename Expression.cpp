@@ -19,6 +19,11 @@ BasicExpression::BasicExpression(std::string text, token::Token t): exec(std::mo
 
 }
 
+CommandParseContext* BasicExpression::execute(CommandParseContext *command){
+    command->processes.push_back(std::make_unique<Process>(this->toString()));
+    return command;
+}
+
 BasicExpression::BasicExpression(std::string text,
                                  std::vector<std::string> params)
                                  : exec(std::move(text))
@@ -58,12 +63,38 @@ std::string ReservedExpression::toString() const
     return token::OperatorString.at(oper.getType());
 }
 
+CommandParseContext* ReservedExpression::execute(CommandParseContext *command){
+
+}
+
 std::string ComplexExpression::toString() const
 {
     if(rest)
         return expr->toString() +" "+ token::OperatorString.at(oper.getType()) +" "+ rest->toString();
     else
         return expr->toString() +" "+ token::OperatorString.at(oper.getType());
+}
+
+CommandParseContext* ComplexExpression::execute(CommandParseContext *command){
+    command = expr->execute(command);
+    if(this->rest)
+    {
+        switch (oper.getType())
+        {
+        case token::Token::Type::AppendOperator:
+            command->hasAppend = true;
+            return rest->execute(command);
+        case token::Token::Type::Redirect:
+            command -> hasDirectOutput = true;
+            return rest->execute(command);
+        case token::Token::Type::InputOperator:
+            command -> hasInput = true;
+            return rest->execute(command);
+        }
+    }   
+    else
+        command->inBackground = true;
+    
 }
 
 ComplexExpression::ComplexExpression(std::unique_ptr<Expression> LeftSide,

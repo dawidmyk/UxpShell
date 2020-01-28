@@ -1,4 +1,5 @@
 #include "Shell.hpp"
+
 void Shell::start() {
 		alive = true;
 		outputThread.reset(new std::thread(&Shell::output, this));
@@ -32,13 +33,21 @@ void Shell::input() {
 void Shell::interact() {
 		while(alive) {
 			while(!isForeground) {
-				prompt();
-				char line[100];
-				fgets(line, 100, stdin);
+				
+				//char line[100];
+				//fgets(line, 100, stdin);
+				CommandParseContext command;
+				std::stringstream ss;
+				std::string line;
+				parser::Parser p(std::make_unique<Scanner>(ss));
+				getline(std::cin, line);
+				ss.str(line);
+				std::unique_ptr<Expression> ex = p.parse();
+				ex->execute(&command);
+
 				//tutaj można zbudować komendę
 				//próbujemy wczytać komendę
 				//parsujemy ją
-				bool commandAccepted = true;
 				CommandParseContext command;
 				command.type = CommandType::new_pipeline;
 				command.processes.push_back(std::unique_ptr<Process>(new Process("debug/first-tested")));
@@ -47,13 +56,11 @@ void Shell::interact() {
 				command.hasAppend = false;
 				command.inBackground = false;
 				
-				if(commandAccepted) { //ta zmienna tak umownie
-					if(command.type == CommandType::new_pipeline) {
-						std::unique_ptr<PipelineContext> pipe(new PipelineContext(command, vars.getPath()));
-						PipelineError error = pipe->check();
-						if(error.occur) {
-							printf("Wystąpił błąd\n");
-						}
+				if(command.type == CommandType::new_pipeline) {
+					std::unique_ptr<PipelineContext> pipe(new PipelineContext(command, vars.getPath()));
+					PipelineError error = pipe->check();
+					if(error.occur) {
+						printf("Wystąpił błąd\n");						}
 						else {
 							pipe->spawnItself();
 							pipe->spawnWaiting();
@@ -64,12 +71,12 @@ void Shell::interact() {
 								foreground = evForeground;
 							}
 						}
-							
+								
 					}
 					else if(command.type == CommandType::exit) {
 						shell_exit();
 					}
-				}
+				
 			}
 	}
 }

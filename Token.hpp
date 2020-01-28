@@ -32,7 +32,9 @@ namespace token
             Redirect,
             Dot,
             Slash,
-            ParamOperator
+            ParamOperator,
+            AppendOperator,
+            InputOperator
         };
         Token();
         Token(std::string val, Type t);
@@ -70,7 +72,9 @@ namespace token
         { Token::Type::Slash ,              "Slash: /"              },
         { Token::Type::PipeOperator ,       "PipeOperator: |"       },
         { Token::Type::BackgroundOperator , "BackgroundOperator: &" },
-        { Token::Type::ParamOperator ,      "ParamOperator: -"      }
+        { Token::Type::ParamOperator ,      "ParamOperator: -"      },
+        { Token::Type::AppendOperator ,     "AppendOperator >>"     },
+        { Token::Type::InputOperator ,      "InputOperator: <"      }
     };
 
     const std::map <const Token::Type, std::string> OperatorString =
@@ -89,13 +93,16 @@ namespace token
         { Token::Type::Dot ,                "."                },
         { Token::Type::Slash ,              "/"              },
         { Token::Type::Identifier ,         "Identifier"              },
-        { Token::Type::ParamOperator ,      "-"      }
+        { Token::Type::ParamOperator ,      "-"      },
+        { Token::Type::AppendOperator ,      ">>"      },
+        { Token::Type::InputOperator ,      "<"      }
     };
 
     const std::map <const char, const Token::Type> Operators =
     {
         { '=', Token::Type::Equals              },
         { '>', Token::Type::Redirect            },
+        { '<', Token::Type::InputOperator       },
         { '.', Token::Type::Dot                 },
         { '/', Token::Type::Slash               },
         { '-', Token::Type::ParamOperator       },

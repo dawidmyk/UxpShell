@@ -5,7 +5,7 @@
 #include <iostream>
 #include <vector>
 
-#include "../Scanner/Scanner.hpp"
+#include "Scanner.hpp"
 #include "Expression.hpp"
 
 namespace parser
