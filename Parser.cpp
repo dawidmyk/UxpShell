@@ -60,6 +60,8 @@ std::unique_ptr<Expression> Parser::complexCommand()
     auto t = readToken();
     if(t.getType() == Token::Type::PipeOperator)
         return std::make_unique<ComplexExpression>(std::move(expr), t, complexCommand());
+	if(t.getType() == Token::Type::Redirect || t.getType() == Token::Type::AppendOperator)
+		return std::make_unique<ComplexExpression>(std::move(expr), t, basicCommand());
     if(t.getType() == Token::Type::BackgroundOperator)
         return std::make_unique<ComplexExpression>(std::move(expr), t);
     requireToken(Token::Type::Eof);

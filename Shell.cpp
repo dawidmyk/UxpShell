@@ -42,19 +42,19 @@ void Shell::interact() {
 				parser::Parser p(std::make_unique<Scanner>(ss));
 				getline(std::cin, line);
 				ss.str(line);
-				std::unique_ptr<Expression> ex = p.parse();
+				try
+				{
+					std::unique_ptr<Expression> ex = p.parse();
+				}
+				catch (exception& e)
+				{
+					std::cout << e.what() << '\n';
+				}
 				ex->execute(&command);
 
 				//tutaj można zbudować komendę
 				//próbujemy wczytać komendę
 				//parsujemy ją
-				CommandParseContext command;
-				command.type = CommandType::new_pipeline;
-				command.processes.push_back(std::unique_ptr<Process>(new Process("debug/first-tested")));
-				command.hasInput = false;
-				command.hasDirectOutput = false;
-				command.hasAppend = false;
-				command.inBackground = false;
 				
 				if(command.type == CommandType::new_pipeline) {
 					std::unique_ptr<PipelineContext> pipe(new PipelineContext(command, vars.getPath()));

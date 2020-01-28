@@ -42,7 +42,6 @@ std::string BasicExpression::toString() const
 
 ReservedExpression::~ReservedExpression()
 {
-
 }
 
 ReservedExpression::ReservedExpression(token::Token t)
@@ -64,7 +63,27 @@ std::string ReservedExpression::toString() const
 }
 
 CommandParseContext* ReservedExpression::execute(CommandParseContext *command){
-
+	switch(oper.getType())
+	{
+		case token::Token::Type::cd:
+			command->type = CommandType::cd;
+			return command;
+		case token::Token::Type::bg:
+			command->type = CommandType::bg;
+			return command;
+		case token::Token::Type::fg:
+			command->type = CommandType::fg;
+			return command;
+		case token::Token::Type::echo:
+			command->type = CommandType::echo;
+			return command;
+		case token::Token::Type::pwd:
+			command->type = CommandType::pwd;
+			return command;
+		case token::Token::Type::jobs:
+			command->type = CommandType::jobs;
+			return command;
+	}
 }
 
 std::string ComplexExpression::toString() const
