@@ -26,8 +26,8 @@ void Shell::interact() {
 		std::string line;
 		std::getline(std::cin, line);
 		uttermost.text = line;
-		uttermost.parse();
-		
+		//uttermost.parse();
+		uttermost.hardcode();
 		auto middleIt = uttermost.subcommands.begin();
 		auto middleEnd = uttermost.subcommands.end();
 		while(middleIt != middleEnd) {
@@ -44,6 +44,9 @@ void Shell::interact() {
 				if(last) {
 					innermost = std::move(middlemost);
 					innermost.reparse();
+					//jego samego nie możemy przetworzyć bo nie mamy repars'a
+					break;
+					//więc musimy wyjść
 				}
 				else innermost = std::move(*innerIt);
 				
@@ -81,16 +84,13 @@ void Shell::interact() {
 
 		command.processes.push_back(std::move(end));
 		
-		command.type = CommandType::new_pipeline;
-		command.hasInput = false;
-		command.hasDirectOutput = false;
-		command.hasAppend = false;
-		command.inBackground = false;
-		bool commandAccepted = true;
-		if(commandAccepted) { //ta zmienna tak umownie
-			if(command.type == CommandType::new_pipeline) {
+		innermost.type = CommandType::new_pipeline;
+	
+		innermost.accepted = true;
+		if(innermost.accepted) { //ta zmienna tak umownie
+			if(innermost.type == CommandType::new_pipeline) {
 				Pipeline pipe;
-				PipelineError error = pipe.create(command, vars.getPath());
+				PipelineError error = pipe.create(innermost, vars.getPath());
 				if(error.occur) {
 					printf("Wystąpił błąd\n");
 				}
@@ -103,12 +103,15 @@ void Shell::interact() {
 				}
 		
 			}
-			else if(command.type == CommandType::exit) {
+			else if(innermost.type == CommandType::exit) {
 				break;
 			}
 		}
 		if(last) last = false;
-		if(!last) ++innerIt;
+		if(!last) {
+			++innerIt;
+			if(innerIt == innerEnd) last = true;
+		}
 	}
 	++middleIt;
 	}		

@@ -10,4 +10,5 @@ add_executable(Shell ${SOURCES})
 add_executable(first-tested programs/first-tested.cpp)
 add_executable(tested programs/tested.cpp)
 add_executable(increment programs/increment.cpp)
+add_executable(args_increment programs/args_increment.cpp)
 

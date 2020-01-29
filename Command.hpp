@@ -3,6 +3,7 @@
 #include <string>
 #include "Routine.hpp"
 enum class CommandType {
+	no_type,
 	new_pipeline,
 	exit,
 	bg,
@@ -10,7 +11,8 @@ enum class CommandType {
 	jobs,
 	echo,
 	pwd,
-	cd
+	cd,
+	var_set
 	//i inne
 };
 
@@ -29,12 +31,18 @@ struct CommandParseContext {
 	bool hasInput;
 	bool hasDirectOutput;
 	bool hasAppend;
+	bool accepted;
 	bool inBackground;
-	bool embedded;
 	
 	void parse() {
 		}//pierwsze parsowanie
 	void reparse() {
 		}//podstawienie stringów z listy results za `...`
 	
+	void hardcode();
+	
+	CommandParseContext(): hasInput(false), hasDirectOutput(false), 
+		hasAppend(false), accepted(false)
+		{
+		}
 };
