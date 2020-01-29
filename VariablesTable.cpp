@@ -84,16 +84,16 @@ string VariablesTable::getEnvironmentVariable(string nameS) {
 		return "";
 }
 
-void VariablesTable::setActualPath(string nameS) {	
-	char* name= new char[nameS.length() + 1]; 
-    strcpy(name, nameS.c_str());
+void VariablesTable::setActualPath(string nameS) {	// funkcja do ustawiania ścieżki względnej lub bezwględnej
+	char* name= new char[nameS.length() + 1]; 		// zamiana stringa na char*
+    strcpy(name, nameS.c_str());	
+		
+	actualPWD = realpath(name, null);						// funkcja linuxowa do zamiany ścieżki na bezwzględną
 	
-	actualPWD = realpath(name, null);
-	
-	chdir(actualPWD);
+	chdir(actualPWD);											// funkcja systemowa do ustawienia aktualnego katalogu
 }
 
-string VariablesTable::getActualPath() {
-	return string(actualPWD);
+string VariablesTable::getActualPath() {					// funkcja do zwracania naszego aktualnego katalogu
+	return string(get_current_dir_name(void));
 }
 
