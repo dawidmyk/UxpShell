@@ -6,7 +6,7 @@
 int main() {
 	Process i("tested");
 	
-	char k = i.check();
+	// char k = i.check();
 	std::cout << "Udało się?" << (int)k << std::endl;
 	
 	i.addArg("takis");

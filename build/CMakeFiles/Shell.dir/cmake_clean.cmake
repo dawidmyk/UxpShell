@@ -6,8 +6,8 @@ file(REMOVE_RECURSE
   "CMakeFiles/Shell.dir/Streams.cpp.o"
   "CMakeFiles/Shell.dir/echo.cpp.o"
   "CMakeFiles/Shell.dir/main.cpp.o"
-  "builds/Shell.pdb"
-  "builds/Shell"
+  "debug/Shell.pdb"
+  "debug/Shell"
 )
 
 # Per-language clean rules from dependency scanning.
