@@ -72,46 +72,7 @@ int Process::join() {
 
 
 
-char Pipeline::spawn() {
-	auto begin = processes.begin();
-	auto end = processes.end();
-	auto it = begin;
-	auto prev_end = end;
-	prev_end--;
-	while(it != prev_end) {
-		StreamConnector pair;
-		(*it)->setOutput(pair.getOutput());
-		it++;
-		(*it)->setInput(pair.getInput());
-	}
-	it = begin;
-	char i = 1;
-	while(it != end) {
-		char now_i;
-		now_i = (*it)->spawn();
-		if(now_i == 0) i = 0;
-		it++;
-	}
-	return i;
-	
-}
 
-int Pipeline::join() {
-	int ret;
-	auto it = processes.begin();
-	auto end = processes.end();
-	while(it != end) {
-		ret = (*it)->join();
-		it++;
-	}
-	return ret;
-}
-
-char Process::check(const std::string & path) {
-		std::pair<std::string, char> result = checkExecAccess(name, path);
-		if(result.second == 0) name = result.first;
-		return result.second;
-}
 
 	
 		 

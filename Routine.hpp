@@ -98,38 +98,7 @@ class Process : public Routine {
 	
 	
 
-class Pipeline : public Routine {
-	
-	std::list<std::unique_ptr<Process>> processes;
-	
-	public:
-	
-	void setProcesses(std::list<std::unique_ptr<Process>> & process_list) {
-		processes = std::move(process_list);
-	}
-	
-	void addProcess(std::unique_ptr<Process> process) {
-		processes.push_back(std::move(process));
-	}
-	
-	//minimalna długość pipelin'u to 2 procesy i o to trzeba zadbać gdzieś indziej
-	void setInput(std::unique_ptr<InputStream> stream) {
-		(*processes.begin())->setInput(std::move(stream));
-	}
-	
-	void setOutput(std::unique_ptr<OutputStream> stream) {
-		auto end = processes.end();
-		end--;
-		(*end)->setOutput(std::move(stream));
-	}
-	
-	char spawn();
-	
-	int join();
-	
-	char check(const std::string & path);
-	
-};
+
 	
 	
 		 

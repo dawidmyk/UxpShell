@@ -1,9 +1,50 @@
-#include "PipelineContext.hpp"
-void PipelineContext::create
+#include "Pipeline.hpp"
+char Pipeline::spawn() {
+	auto begin = processes.begin();
+	auto end = processes.end();
+	auto it = begin;
+	auto prev_end = end;
+	prev_end--;
+	while(it != prev_end) {
+		StreamConnector pair;
+		(*it)->setOutput(pair.getOutput());
+		it++;
+		(*it)->setInput(pair.getInput());
+	}
+	it = begin;
+	char i = 1;
+	while(it != end) {
+		char now_i;
+		now_i = (*it)->spawn();
+		if(now_i == 0) i = 0;
+		it++;
+	}
+	return i;
+	
+}
+
+int Pipeline::join() {
+	int ret;
+	auto it = processes.begin();
+	auto end = processes.end();
+	while(it != end) {
+		ret = (*it)->join();
+		it++;
+	}
+	return ret;
+}
+
+char Process::check(const std::string & path) {
+		std::pair<std::string, char> result = checkExecAccess(name, path);
+		if(result.second == 0) name = result.first;
+		return result.second;
+}
+
+PipelineError Pipeline::create
 	(CommandParseContext & cont, const std::string & path) {
-	exited = false;
+	PipelineError error;
 	error.occur = false;
-	pipes.setProcesses(cont.processes);
+	
 	char fileEffect[3] = {0};
 	std::string filenames[3];
 	filenames[0] = cont.inputFile;
@@ -25,7 +66,7 @@ void PipelineContext::create
 			error.which = i;
 			error.nume = 0;
 			error.filename = filenames[i];
-			return;
+			return error;
 		}
 	}
 	auto it = cont.processes.begin();
@@ -39,28 +80,19 @@ void PipelineContext::create
 			error.which = 3;
 			error.filename = (*it)->getName();
 			error.nume = nume;
-			return;
+			return error;
 		}
 		++nume;
 	}
+	setProcesses(cont.processes);
 	if(cont.hasInput) {
-		pipes.inputFile(cont.inputFile);
-	}
-	else {
-		output = pipes.regularInput();
-		outputAccessible = true;
+		inputFile(cont.inputFile);
 	}
 	
 	if(cont.hasDirectOutput || cont.hasAppend) {
-		pipes.outputFile(cont.outputFile, cont.hasAppend);
+		outputFile(cont.outputFile, cont.hasAppend);
 	}
 	
-	else {
-		input = pipes.regularOutput();
-		inputAccessible = false;
-	}
-	
-	
-		
+	return error;
 	
 }
