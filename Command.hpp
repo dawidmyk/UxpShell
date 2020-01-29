@@ -42,7 +42,7 @@ struct CommandParseContext {
 	void hardcode();
 	
 	CommandParseContext(): hasInput(false), hasDirectOutput(false), 
-		hasAppend(false), accepted(false)
+		hasAppend(false), accepted(false), type(CommandType::no_type)
 		{
 		}
 };
