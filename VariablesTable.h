@@ -64,7 +64,7 @@ public:
 	
 	void setEnvironmentVariable(string, string)	//ustawianie zmiennej
 	
-	void setActualPath(string name); // œcie¿ka albo pe³na albo wzglêdna typu ./local
-	string getActualPath();			//zwraca lokalizacjê aktualnego katalogu
+	static void setActualPath(string name); // œcie¿ka albo pe³na albo wzglêdna typu ./local
+	static string getActualPath();			//zwraca lokalizacjê aktualnego katalogu
 };
 

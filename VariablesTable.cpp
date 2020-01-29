@@ -95,5 +95,6 @@ void VariablesTable::setActualPath(string nameS) {	// funkcja do ustawiania ści
 
 string VariablesTable::getActualPath() {					// funkcja do zwracania naszego aktualnego katalogu
 	return string(get_current_dir_name(void));
+	//return actualPWD;											// to było w wersji nie statycznej
 }
 
