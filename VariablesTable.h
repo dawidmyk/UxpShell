@@ -20,8 +20,9 @@
 		set...() - inicjowanie zmiennej. Je¿eli nie istnia³a to zostanie utworzona z podanymi wartoœciami.
 
 	W rezultacie wystarcz¹ same:
-		get...()
-		set...()
+		getStringVariable() - wraca zmienn¹ œrodowiska, a jak nie ma to lokaln¹
+		setStringValue() - ustawnianie zmiennej lokalnej
+		setEnvironmentVariable() - ustawianie zmienneh œrodowiskowej
 
 
 
@@ -39,10 +40,11 @@ using namespace std;
 
 class VariablesTable
 {
-public:
+private:
 
 	map<string, Variable*> idToVariable;
 	void exsist(string);
+	string getEnvironmentVariable(string);
 
 public:
 	VariablesTable();
@@ -57,6 +59,7 @@ public:
 	void setIntValue(string, int);
 	void setDoubleValue(string, double);
 	void setStringValue(string, string);
-
+	
+	void setEnvironmentVariable(string, string)	//ustawianie zmiennej
 };
 

@@ -33,6 +33,11 @@ double VariablesTable::getDoubleVariable(string name) {
 	return idToVariable[name]->getDoubleValue();
 }
 string VariablesTable::getStringVariable(string name) {
+	string ret = getEnvironmentVariable(name)
+	if(ret.length>0) {
+		return ret;
+	}
+	
 	exsist(name);
 	return idToVariable[name]->getStringValue();
 }
@@ -56,3 +61,26 @@ void VariablesTable::exsist(string name) {
 	}
 	addNewVariable(name);
 }
+
+/* kiedy parser wykryje że inicjalizujemy zmienną środowiskową */
+void setEnvironmentVariable(string nameS, string x) { 
+    char* name= new char[nameS.length() + 1]; 
+    strcpy(name, nameS.c_str());  
+	
+	char* value= new char[x.length() + 1]; 
+    strcpy(value, x.c_str());  
+	
+	setenv(const char *name, const char *value, int 1);
+}
+
+string getEnvironmentVariable(string nameS) { 
+    char* name= new char[nameS.length() + 1]; 
+    strcpy(name, nameS.c_str());
+
+	char* envVar = char *getenv(const char *name);
+	if(envVar)
+		return string(envVar);
+	else
+		return "";
+}
+
