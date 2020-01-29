@@ -43,8 +43,10 @@ class VariablesTable
 private:
 
 	map<string, Variable*> idToVariable;
+	char* actualPWD;
 	void exsist(string);
 	string getEnvironmentVariable(string);
+	
 
 public:
 	VariablesTable();
@@ -52,14 +54,17 @@ public:
 
 	void addNewVariable(string);
 
-	int getIntVariable(string);
-	double getDoubleVariable(string);
+	//int getIntVariable(string);
+	//double getDoubleVariable(string);
 	string getStringVariable(string);
 
-	void setIntValue(string, int);
-	void setDoubleValue(string, double);
+	//void setIntValue(string, int);
+	//void setDoubleValue(string, double);
 	void setStringValue(string, string);
 	
 	void setEnvironmentVariable(string, string)	//ustawianie zmiennej
+	
+	void setActualPath(string name); // œcie¿ka albo pe³na albo wzglêdna typu ./local
+	string getActualPath();			//zwraca lokalizacjê aktualnego katalogu
 };
 

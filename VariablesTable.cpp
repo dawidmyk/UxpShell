@@ -63,7 +63,7 @@ void VariablesTable::exsist(string name) {
 }
 
 /* kiedy parser wykryje że inicjalizujemy zmienną środowiskową */
-void setEnvironmentVariable(string nameS, string x) { 
+void VariablesTable::setEnvironmentVariable(string nameS, string x) { 
     char* name= new char[nameS.length() + 1]; 
     strcpy(name, nameS.c_str());  
 	
@@ -73,7 +73,7 @@ void setEnvironmentVariable(string nameS, string x) {
 	setenv(const char *name, const char *value, int 1);
 }
 
-string getEnvironmentVariable(string nameS) { 
+string VariablesTable::getEnvironmentVariable(string nameS) { 
     char* name= new char[nameS.length() + 1]; 
     strcpy(name, nameS.c_str());
 
@@ -82,5 +82,13 @@ string getEnvironmentVariable(string nameS) {
 		return string(envVar);
 	else
 		return "";
+}
+
+void VariablesTable::setActualPath(string name) {
+	actualPWD = realpath(name);
+}
+
+string VariablesTable::getActualPath() {
+	return string(actualPWD);
 }
 
