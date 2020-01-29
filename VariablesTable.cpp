@@ -84,8 +84,8 @@ string VariablesTable::getEnvironmentVariable(string nameS) {
 		return "";
 }
 
-void VariablesTable::setActualPath(string name) {
-	actualPWD = realpath(name);
+void VariablesTable::setActualPath(string name) {	
+	actualPWD = realpath(name, null);
 }
 
 string VariablesTable::getActualPath() {
