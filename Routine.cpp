@@ -6,7 +6,7 @@
 //w budowaniu potoków
 
 	
-std::vector<char *> Process::prepare_exec() {
+std::vector<char *> RealProcess::prepare_exec() {
 	std::vector<char *> clear_args;
 	{
 		int len = name.length();
@@ -27,7 +27,7 @@ std::vector<char *> Process::prepare_exec() {
 }
 
 
-char Process::spawn() {
+char RealProcess::spawn() {
 	id = fork();
 	if(id < 0) return 0;
 	if(input) {
@@ -61,12 +61,17 @@ char Process::spawn() {
 	return 1;
 }
 
-int Process::join() {
+std::pair<std::string, int> RealProcess::join() {
 	int status;
 	waitpid(id, &status, 0);
-	return status;
+	return std::make_pair<std::string, int>(std::string(""), (int)status);
 }
 
+char RealProcess::check(const std::string & path) {
+		std::pair<std::string, char> result = checkExecAccess(name, path);
+		if(result.second == 0) name = result.first;
+		return result.second;
+}
 
 
 

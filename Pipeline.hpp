@@ -28,10 +28,17 @@ class Pipeline : public Routine {
 	
 	char spawn();
 	
-	int join();
+	std::pair<std::string, int> join();
 	
 	char check(const std::string & path);
 	
 	PipelineError create(CommandParseContext & cont, const std::string & path);
+	
+	std::string read() {
+		auto end = processes.end();
+		end--;
+		return (*end)->read();
+	}
+
 	
 };

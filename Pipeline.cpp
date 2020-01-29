@@ -11,6 +11,8 @@ char Pipeline::spawn() {
 		it++;
 		(*it)->setInput(pair.getInput());
 	}
+	
+	
 	it = begin;
 	char i = 1;
 	while(it != end) {
@@ -19,12 +21,16 @@ char Pipeline::spawn() {
 		if(now_i == 0) i = 0;
 		it++;
 	}
+	
+	(*begin)->realiseOutput();
+	(*prev_end)->realiseInput();
+	
 	return i;
 	
 }
 
-int Pipeline::join() {
-	int ret;
+std::pair<std::string, int> Pipeline::join() {
+	std::pair<std::string, int> ret;
 	auto it = processes.begin();
 	auto end = processes.end();
 	while(it != end) {
@@ -34,11 +40,6 @@ int Pipeline::join() {
 	return ret;
 }
 
-char Process::check(const std::string & path) {
-		std::pair<std::string, char> result = checkExecAccess(name, path);
-		if(result.second == 0) name = result.first;
-		return result.second;
-}
 
 PipelineError Pipeline::create
 	(CommandParseContext & cont, const std::string & path) {
