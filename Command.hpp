@@ -4,7 +4,13 @@
 #include "Routine.hpp"
 enum class CommandType {
 	new_pipeline,
-	exit
+	exit,
+	bg,
+	fg,
+	jobs,
+	echo,
+	pwd,
+	cd
 	//i inne
 };
 

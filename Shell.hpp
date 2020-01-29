@@ -6,7 +6,9 @@
 #include <thread>
 #include <iostream>
 #include <cstdio>
+#include <sstream>
 
+#include "Parser/Parser.hpp"
 #include "VariableContext.hpp"
 #include "Pipeline.hpp"
 
