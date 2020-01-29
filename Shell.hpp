@@ -8,12 +8,12 @@
 #include <exception>
 
 #include "Parser.hpp"
-#include "VariableContext.hpp"
+#include "VariablesTable.h"
 #include "Pipeline.hpp"
 
 
 class Shell {
-	VariableContext vars;
+	VariablesTable vars;
 
 	public:
 

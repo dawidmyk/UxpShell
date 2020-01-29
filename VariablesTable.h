@@ -1,28 +1,28 @@
 /*
-	Tutaj nie ma wiêkszej filozofii. Tablica trzymaj¹ca hashmapê i interfejs dostêpu. 
+	Tutaj nie ma wiÄ™kszej filozofii. Tablica trzymajÄ…ca hashmapÄ™ i interfejs dostÄ™pu. 
 	
-	Struktura zawieraj¹ca zmienne systemowe w postaci hasmapy identyfikowanej przez nazwê zmiennej
-	Ka¿da zmienna reprezentowana jest przez klasê Variable
-	zmienne nie maj¹ typu jako takiego. Mo¿na je inicjowaæ intem, double i stringiem u¿ywaj¹c odpowiednich metod set...()
-	kiedy bêdziemy chcieli dobraæ siê do danej wartoœci u¿ywamy metod get...()
-	dane s¹ spójne i je¿eli zapiszemy string do zmiennej a bêdziemy chcieli odczytaæ u¿ywaj¹c getIntVariable to otrzymamy d³ugoœæ zmiennej
-	jeœli zapiszemy inta np. 42 a bêdziemy chcieli odczytaæ stringa to otrzymamy ³añcuch: "42" itp.
+	Struktura zawierajÄ…ca zmienne systemowe w postaci hasmapy identyfikowanej przez nazwÄ™ zmiennej
+	KaÅ¼da zmienna reprezentowana jest przez klasÄ™ Variable
+	zmienne nie majÄ… typu jako takiego. MoÅ¼na je inicjowaÄ‡ intem, double i stringiem uÅ¼ywajÄ…c odpowiednich metod set...()
+	kiedy bÄ™dziemy chcieli dobraÄ‡ siÄ™ do danej wartoÅ›ci uÅ¼ywamy metod get...()
+	dane sÄ… spÃ³jne i jeÅ¼eli zapiszemy string do zmiennej a bÄ™dziemy chcieli odczytaÄ‡ uÅ¼ywajÄ…c getIntVariable to otrzymamy dÅ‚ugoÅ›Ä‡ zmiennej
+	jeÅ›li zapiszemy inta np. 42 a bÄ™dziemy chcieli odczytaÄ‡ stringa to otrzymamy Å‚aÅ„cuch: "42" itp.
 
 
 	Instrukcja:
 		Tworzymy w dogodnym miejscu VariablesTable
 
 	Interfejs:
-		addNewVariable(string) - jawne stworzenie zmiennej zainicjowanej wartoœciami domyœlnymi
+		addNewVariable(string) - jawne stworzenie zmiennej zainicjowanej wartoÅ›ciami domyÅ›lnymi
 
-		get...() - zwraca dan¹ wartoœæ. Je¿eli zmienna by³a niezainicjowana to stworzy now¹ i zwróci wartoœci domyœlne czyli int 0, double 0.0, string ""
+		get...() - zwraca danÄ… wartoÅ›Ä‡. JeÅ¼eli zmienna byÅ‚a niezainicjowana to stworzy nowÄ… i zwrÃ³ci wartoÅ›ci domyÅ›lne czyli int 0, double 0.0, string ""
 
-		set...() - inicjowanie zmiennej. Je¿eli nie istnia³a to zostanie utworzona z podanymi wartoœciami.
+		set...() - inicjowanie zmiennej. JeÅ¼eli nie istniaÅ‚a to zostanie utworzona z podanymi wartoÅ›ciami.
 
-	W rezultacie wystarcz¹ same:
-		getStringVariable() - wraca zmienn¹ œrodowiska, a jak nie ma to lokaln¹
+	W rezultacie wystarczÄ… same:
+		getStringVariable() - wraca zmiennÄ… Å›rodowiska, a jak nie ma to lokalnÄ…
 		setStringValue() - ustawnianie zmiennej lokalnej
-		setEnvironmentVariable() - ustawianie zmienneh œrodowiskowej
+		setEnvironmentVariable() - ustawianie zmienneh Å›rodowiskowej
 
 
 
@@ -36,7 +36,7 @@
 #include <map>
 #include "Variable.h"
 
-using namespace std;
+using std::string;
 
 class VariablesTable
 {
@@ -44,6 +44,7 @@ private:
 
 	map<string, Variable*> idToVariable;
 	char* actualPWD;
+	int lastResult;
 	void exsist(string);
 	string getEnvironmentVariable(string);
 	
@@ -54,17 +55,23 @@ public:
 
 	void addNewVariable(string);
 
-	//int getIntVariable(string);
-	//double getDoubleVariable(string);
+	int getIntVariable(string);
+	double getDoubleVariable(string);
 	string getStringVariable(string);
 
-	//void setIntValue(string, int);
-	//void setDoubleValue(string, double);
+	void setIntValue(string, int);
+	void setDoubleValue(string, double);
 	void setStringValue(string, string);
 	
-	void setEnvironmentVariable(string, string)	//ustawianie zmiennej
+	void setEnvironmentVariable(string, string);	//ustawianie zmiennej
 	
-	static void setActualPath(string name); // œcie¿ka albo pe³na albo wzglêdna typu ./local
-	static string getActualPath();			//zwraca lokalizacjê aktualnego katalogu
+	void setActualPath(string name); // Å›cieÅ¼ka albo peÅ‚na albo wzglÄ™dna typu ./local
+	string getActualPath();			//zwraca lokalizacjÄ™ aktualnego katalogu
+	
+	void setLastResult(int);
+	int getLastResult();
+	
+	string getSystemPath();
+	
 };
 

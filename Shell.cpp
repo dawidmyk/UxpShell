@@ -90,14 +90,14 @@ void Shell::interact() {
 		if(innermost.accepted) { //ta zmienna tak umownie
 			if(innermost.type == CommandType::new_pipeline) {
 				Pipeline pipe;
-				PipelineError error = pipe.create(innermost, vars.getPath());
+				PipelineError error = pipe.create(innermost, vars.getSystemPath());
 				if(error.occur) {
 					printf("Wystąpił błąd\n");
 				}
 				else {
 					pipe.spawn();
 					std::pair<std::string, int> result = pipe.join();
-					vars.setReturn(result.second);
+					vars.setLastResult(result.second);
 					if(!last) middlemost.results.push_back(result.first);
 					std::cout << "Oto co nam powiedział potok: " << result.first << std::endl;
 				}
