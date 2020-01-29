@@ -3,7 +3,7 @@
 #include <iterator>
 #include <algorithm>
 #include <iostream>
-#include "pch.h"
+//#include "pch.h"
 #include "VariablesTable.h"
 
 using namespace std;

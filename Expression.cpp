@@ -19,7 +19,7 @@ BasicExpression::BasicExpression(std::string text, token::Token t): exec(std::mo
 
 }
 
-CommandParseContext* BasicExpression::execute(CommandParseContext *command){
+CommandParseContext* BasicExpression::execute(CommandParseContext *command) const {
     command->processes.push_back(std::make_unique<Process>(this->toString()));
     return command;
 }
@@ -62,7 +62,7 @@ std::string ReservedExpression::toString() const
     return token::OperatorString.at(oper.getType());
 }
 
-CommandParseContext* ReservedExpression::execute(CommandParseContext *command){
+CommandParseContext* ReservedExpression::execute(CommandParseContext *command) const {
 	switch(oper.getType())
 	{
 		case token::Token::Type::cd:
@@ -94,7 +94,7 @@ std::string ComplexExpression::toString() const
         return expr->toString() +" "+ token::OperatorString.at(oper.getType());
 }
 
-CommandParseContext* ComplexExpression::execute(CommandParseContext *command){
+CommandParseContext* ComplexExpression::execute(CommandParseContext *command) const {
     command = expr->execute(command);
     if(this->rest)
     {
