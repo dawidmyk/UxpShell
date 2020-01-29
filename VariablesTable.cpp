@@ -84,7 +84,10 @@ string VariablesTable::getEnvironmentVariable(string nameS) {
 		return "";
 }
 
-void VariablesTable::setActualPath(string name) {	
+void VariablesTable::setActualPath(string nameS) {	
+	char* name= new char[nameS.length() + 1]; 
+    strcpy(name, nameS.c_str());
+	
 	actualPWD = realpath(name, null);
 }
 
