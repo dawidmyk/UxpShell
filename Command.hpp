@@ -21,6 +21,7 @@ enum class CommandType {
 struct CommandParseContext {
 	CommandType type;
 	std::list<std::unique_ptr<Process>> processes;
+	std::list<std::unique_ptr<CommandParseContext>> subcommands;
 	std::string inputFile;
 	std::string outputFile;
 	bool hasInput;

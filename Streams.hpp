@@ -45,6 +45,23 @@ class PipeInputStream : public InputStream {
 		read(fd, &i, 1);
 	}
 	
+	void readMessage(std::string & message) {
+		message.clear();
+		char i;
+		goto start;
+		while(i != '\n') {
+			message += i;
+			start:
+			readChar(i);
+		}	
+	}
+	
+
+	
+	static std::unique_ptr<PipeInputStream> toPipe(std::unique_ptr<InputStream> & old) {
+		return std::unique_ptr<PipeInputStream>(static_cast<PipeInputStream *>(old.release()));
+	}
+	
 };
 
 class PipeOutputStream : public OutputStream {
@@ -63,6 +80,14 @@ class PipeOutputStream : public OutputStream {
 	
 	void writeChar(char i) {
 		write(fd, &i, 1);
+	}
+	
+	void writeMessage(const std::string & message) {
+		write(fd, message.c_str(), message.size() + 1);
+	}
+	
+	static std::unique_ptr<PipeOutputStream> toPipe(std::unique_ptr<OutputStream> & old) {
+		return std::unique_ptr<PipeOutputStream>(static_cast<PipeOutputStream *>(old.release()));
 	}
 	
 };
@@ -115,3 +140,5 @@ class StreamConnector {
 	}
 	
 };
+	
+	

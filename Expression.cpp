@@ -20,7 +20,7 @@ BasicExpression::BasicExpression(std::string text, token::Token t): exec(std::mo
 }
 
 CommandParseContext* BasicExpression::execute(CommandParseContext *command) const {
-    command->processes.push_back(std::make_unique<Process>(this->toString()));
+    command->processes.push_back(std::unique_ptr<Process>(new RealProcess(this->toString())));
     return command;
 }
 
