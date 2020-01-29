@@ -1,7 +1,7 @@
 #include <utility>
 #include "Command.hpp"
 void CommandParseContext::hardcode() {
-	// args-increment `echo 44 | increment` ; args-increment `echo 55 | increment`
+	// args-add `echo 44 | increment` `echo 23 | increment` ; args-increment `echo 55 | increment`
 	
 	CommandParseContext middlemost1;
 	CommandParseContext middlemost2;

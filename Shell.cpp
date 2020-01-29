@@ -45,7 +45,7 @@ void Shell::interact() {
 					innermost = std::move(middlemost);
 					innermost.reparse();
 					//jego samego nie możemy przetworzyć bo nie mamy repars'a
-					break;
+					//break;
 					//więc musimy wyjść
 				}
 				else innermost = std::move(*innerIt);
@@ -71,7 +71,7 @@ void Shell::interact() {
 		//tutaj można zbudować komendę
 		//próbujemy wczytać komendę
 		//parsujemy ją
-		
+		/*
 		CommandParseContext command;
 		std::unique_ptr<Process> beg(EmbeddedProcess::makeMessage("44\n"));
 		std::unique_ptr<Process> middle1(new RealProcess("lsl"));
@@ -83,7 +83,7 @@ void Shell::interact() {
 		//command.processes.push_back(std::move(middle2));
 
 		command.processes.push_back(std::move(end));
-		
+		*/
 		innermost.type = CommandType::new_pipeline;
 	
 		innermost.accepted = true;
@@ -108,7 +108,7 @@ void Shell::interact() {
 			}
 		}
 		if(last) last = false;
-		if(!last) {
+		else if(!last) {
 			++innerIt;
 			if(innerIt == innerEnd) last = true;
 		}
