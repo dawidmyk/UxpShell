@@ -89,6 +89,8 @@ void VariablesTable::setActualPath(string nameS) {
     strcpy(name, nameS.c_str());
 	
 	actualPWD = realpath(name, null);
+	
+	chdir(actualPWD);
 }
 
 string VariablesTable::getActualPath() {
