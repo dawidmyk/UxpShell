@@ -21,7 +21,9 @@ enum class CommandType {
 struct CommandParseContext {
 	CommandType type;
 	std::list<std::unique_ptr<Process>> processes;
-	std::list<std::unique_ptr<CommandParseContext>> subcommands;
+	std::list<CommandParseContext> subcommands;
+	std::list<std::string> results;
+	std::string text;
 	std::string inputFile;
 	std::string outputFile;
 	bool hasInput;
@@ -29,4 +31,10 @@ struct CommandParseContext {
 	bool hasAppend;
 	bool inBackground;
 	bool embedded;
+	
+	void parse() {
+		}//pierwsze parsowanie
+	void reparse() {
+		}//podstawienie stringów z listy results za `...`
+	
 };
