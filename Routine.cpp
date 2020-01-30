@@ -33,7 +33,7 @@ char RealProcess::spawn() {
 	if(input) {
 		if(id == 0) {
 			if(!input->child()) {
-				fprintf(stderr, "Dzieciak wyskakuje w input\n");
+				fprintf(stderr, "Nie można otworzyć inputu (fork-exec)");
 				exit(1);
 			}
 		}
@@ -44,7 +44,7 @@ char RealProcess::spawn() {
 	if(output) {
 		if(id == 0) {
 			if(!output->child()) {
-				fprintf(stderr, "Dzieciak wyskakuje w output\n");
+				fprintf(stderr, "Nie można otworzyć outputu (fork-exec)");
 				exit(1);
 			}
 		}
@@ -54,7 +54,10 @@ char RealProcess::spawn() {
 	}
 	if(id == 0) {
 		execv(name.c_str(), prepare_exec().data());
-		fprintf(stderr, "Dzieciak wyskakuje w exec\n");
+		fprintf(stderr, "Nie można otworzyć pliku wykonywalnego\n");
+		fprintf(stderr, "Błąd funkcji execv\n");
+		fprintf(stderr, "Może plik ma zły format\n");
+
 		exit(1);
 	}
 
