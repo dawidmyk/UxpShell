@@ -20,7 +20,10 @@ BasicExpression::BasicExpression(std::string text, token::Token t): exec(std::mo
 }
 
 CommandParseContext* BasicExpression::execute(CommandParseContext *command, VariablesTable &vars) const {
-    command->processes.push_back(std::unique_ptr<Process>(new RealProcess(this->toString())));
+    auto proc = make_unique<RealProcess>(exec);
+    for(const auto &i: args)
+        proc->addArg(i);
+    command->processes.push_back(std::move(proc));
     command->type = CommandType::new_pipeline;
     return command;
 }
@@ -34,7 +37,6 @@ BasicExpression::BasicExpression(std::string text,
 
 std::string BasicExpression::toString() const
 {
-    std::cout<<"tostring()\n";
     std::string ret = exec;
     for(const auto &i: args)
     {

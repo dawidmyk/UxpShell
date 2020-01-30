@@ -23,6 +23,7 @@ void Shell::interact() {
 		catch (std::exception& e)
 		{
 			std::cout << e.what() << '\n';
+			continue;
 		}
 		ex->execute(&command, vars);	
 		command.accepted = true;
@@ -36,10 +37,10 @@ void Shell::interact() {
 				else {
 					pipe.spawn();
 					std::pair<std::string, int> result = pipe.join();
-					std::cout<<"join";
+					//std::cout<<"join";
 					vars.setLastResult(result.second);
 					//if(!last) command.results.push_back(result.first);
-					std::cout << "Oto co nam powiedział potok: " << result.first << std::endl;
+					//std::cout << "Oto co nam powiedział potok: " << result.first << std::endl;
 				}
 		
 			}

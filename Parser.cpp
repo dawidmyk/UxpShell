@@ -105,7 +105,6 @@ std::string Parser::readCall()
         return ret+=readDirectory();
     else
         ret += requireTokenAndAdvance(Token::Type::Identifier).getStringValue();
-    std::cout<<ret<<std::endl;
     return ret;
 }
 
@@ -122,8 +121,6 @@ std::vector<std::string> Parser::readParams()
         else
             param.push_back(requireTokenAndAdvance(Token::Type::Identifier).getStringValue());
     }
-    for(const auto &i: param)
-        std::cout<<i<<std::endl;
     return param;
 }
 
