@@ -96,8 +96,13 @@ bool Scanner::tryOperator()
 			if(in.peek()=='>')
 			{
 				in.get();
-				token = in.peek()=='>' ? Token::Type::AppendOperator : Token::Type::Redirect;
-				in.get();
+                if(in.peek()=='>'){
+                    token = Token(Token::Type::AppendOperator);
+				    in.get();
+                }
+                else
+                    token = token = Token(Token::Type::Redirect);
+                return true;
 			}
             token=Token(o.second);
             in.get();

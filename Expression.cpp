@@ -104,29 +104,28 @@ std::string ComplexExpression::toString() const
 
 CommandParseContext* ComplexExpression::execute(CommandParseContext *command, VariablesTable &vars) const {
     command = expr->execute(command, vars);
-    if(this->rest)
+    switch (oper.getType())
     {
-        switch (oper.getType())
-        {
         case token::Token::Type::AppendOperator:
             command->hasAppend = true;
-            command->outputFile = file.getMval();
+            command->outputFile = std::move(file.getMval());
             return command;
         case token::Token::Type::Redirect:
             command -> hasDirectOutput = true;
-            command->outputFile = file.getMval();
+            command->outputFile = std::move(file.getMval());
             return command;
         case token::Token::Type::InputOperator:
-            command -> hasInput = true;
-            command->inputFile  = file.getMval();
+            command ->hasInput = true;
+            command->inputFile  = std::move(file.getMval());
             return command;
         case token::Token::Type::PipeOperator:
-            command = rest->execute(command, vars);
-        }
-    }   
-    else
-        command->inBackground = true;
-    
+            if(this->rest)
+                command = rest->execute(command, vars);
+            return command;
+        case token::Token::Type::bg:
+            command->inBackground = true;
+            return command;
+    }       
 }
 
 ComplexExpression::ComplexExpression(std::unique_ptr<Expression> LeftSide,

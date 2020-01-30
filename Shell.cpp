@@ -13,7 +13,7 @@ void Shell::interact() {
 		getline(std::cin, line);
 		ss.str(line);
 
-		
+		//command.outputFile = "b";
 
 		std::unique_ptr<Expression> ex;
 		try
@@ -25,7 +25,8 @@ void Shell::interact() {
 			std::cout << e.what() << '\n';
 			continue;
 		}
-		ex->execute(&command, vars);	
+		ex->execute(&command, vars);
+		std::cout<<"\n\nFILE: "<<command.outputFile<<"\n\n";	
 		command.accepted = true;
 		if(command.accepted) { //ta zmienna tak umownie
 			if(command.type == CommandType::new_pipeline) {
