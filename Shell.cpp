@@ -2,14 +2,18 @@
 
 void Shell::interact() {
 	while(true) {
-		CommandParseContext uttermost;
-		/*
-		CommandParseContext real_command;
+		//CommandParseContext uttermost;
+
+		CommandParseContext command;
+		//CommandParseContext real_command;
 		std::stringstream ss;
 		std::string line;
 		parser::Parser p(std::make_unique<Scanner>(ss));
 		getline(std::cin, line);
 		ss.str(line);
+
+		prompt();
+
 		std::unique_ptr<Expression> ex;
 		try
 		{
@@ -19,14 +23,33 @@ void Shell::interact() {
 		{
 			std::cout << e.what() << '\n';
 		}
-		ex->execute(&command);
-		*/
+		ex->execute(&command, vars);	
+		command.accepted = true;
+		if(command.accepted) { //ta zmienna tak umownie
+			if(command.type == CommandType::new_pipeline) {
+				Pipeline pipe;
+				PipelineError error = pipe.create(command, vars.getSystemPath());
+				if(error.occur) {
+					printf("Wystąpił błąd\n");
+				}
+				else {
+					pipe.spawn();
+					std::pair<std::string, int> result = pipe.join();
+					vars.setLastResult(result.second);
+					if(!last) command.results.push_back(result.first);
+					std::cout << "Oto co nam powiedział potok: " << result.first << std::endl;
+				}
 		
-		prompt();
+			}
+			else if(command.type == CommandType::exit) {
+				break;
+			}
+		}
+		/*
 		std::string line;
 		std::getline(std::cin, line);
 		uttermost.text = line;
-		//uttermost.parse();
+		uttermost.parse();
 		uttermost.hardcode();
 		auto middleIt = uttermost.subcommands.begin();
 		auto middleEnd = uttermost.subcommands.end();
@@ -84,7 +107,7 @@ void Shell::interact() {
 
 		command.processes.push_back(std::move(end));
 		*/
-		innermost.type = CommandType::new_pipeline;
+		/*innermost.type = CommandType::new_pipeline;
 	
 		innermost.accepted = true;
 		if(innermost.accepted) { //ta zmienna tak umownie
@@ -111,7 +134,7 @@ void Shell::interact() {
 		else if(!last) {
 			++innerIt;
 			if(innerIt == innerEnd) last = true;
-		}
+		}*/
 	}
 	++middleIt;
 	}		

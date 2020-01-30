@@ -19,8 +19,9 @@ BasicExpression::BasicExpression(std::string text, token::Token t): exec(std::mo
 
 }
 
-CommandParseContext* BasicExpression::execute(CommandParseContext *command) const {
+CommandParseContext* BasicExpression::execute(CommandParseContext *command, VariablesTable &vars) const {
     command->processes.push_back(std::unique_ptr<Process>(new RealProcess(this->toString())));
+    command->type = CommandType::new_pipeline;
     return command;
 }
 
@@ -36,7 +37,9 @@ std::string BasicExpression::toString() const
     std::cout<<"tostring()\n";
     std::string ret = exec;
     for(const auto &i: args)
+    {
         ret+=(" "+i);
+    }
     return ret;
 }
 
@@ -62,7 +65,7 @@ std::string ReservedExpression::toString() const
     return token::OperatorString.at(oper.getType());
 }
 
-CommandParseContext* ReservedExpression::execute(CommandParseContext *command) const {
+CommandParseContext* ReservedExpression::execute(CommandParseContext *command, VariablesTable &vars) const {
 	switch(oper.getType())
 	{
 		case token::Token::Type::cd:
@@ -94,21 +97,26 @@ std::string ComplexExpression::toString() const
         return expr->toString() +" "+ token::OperatorString.at(oper.getType());
 }
 
-CommandParseContext* ComplexExpression::execute(CommandParseContext *command) const {
-    command = expr->execute(command);
+CommandParseContext* ComplexExpression::execute(CommandParseContext *command, VariablesTable &vars) const {
+    command = expr->execute(command, vars);
     if(this->rest)
     {
         switch (oper.getType())
         {
         case token::Token::Type::AppendOperator:
             command->hasAppend = true;
-            return rest->execute(command);
+            command->outputFile = file.getMval();
+            return command;
         case token::Token::Type::Redirect:
             command -> hasDirectOutput = true;
-            return rest->execute(command);
+            command->outputFile = file.getMval();
+            return command;
         case token::Token::Type::InputOperator:
             command -> hasInput = true;
-            return rest->execute(command);
+            command->inputFile  = file.getMval();
+            return command;
+        case token::Token::Type::PipeOperator:
+            command = rest->execute(command, vars);
         }
     }   
     else
@@ -122,10 +130,17 @@ ComplexExpression::ComplexExpression(std::unique_ptr<Expression> LeftSide,
                                      {
                                          oper = op;
                                      }
+
 ComplexExpression::ComplexExpression(std::unique_ptr<Expression> LeftSide, token::Token op)
         :expr(std::move(LeftSide))
 {
     oper = op;
+}
+ComplexExpression::ComplexExpression(std::unique_ptr<Expression> LeftSide, token::Token op, token::Token f)
+        :expr(std::move(LeftSide))
+{
+    oper = op;
+    file = f;
 }
 
 ComplexExpression::~ComplexExpression()

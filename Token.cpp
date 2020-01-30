@@ -27,7 +27,7 @@ std::string Token::getMval() const
 
  const std::string& Token::getStringValue() const
 {
-    if(type==Token::Type::Identifier)
+    if(type==Token::Type::Identifier || type==Token::Type::Variable)
         return mval;
     return OperatorString.at(type);
 }
