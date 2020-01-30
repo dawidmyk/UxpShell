@@ -52,7 +52,10 @@ char checkAccess(const std::string & filename, char dir) {
 	int result = access(filename.c_str(), flag);
 	if(result == -1) {
 		if(errno == EACCES) return 2;
-		if(errno == ENOENT) return 1;
+		if(errno == ENOENT) {
+			if((dir) == 1) return 0; 
+			return 1;
+		}
 	}
 	return 0; 
 }
