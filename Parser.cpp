@@ -73,10 +73,16 @@ std::string Parser::readCD()
 {
     std::string ret="";
     advance();
-    do
+    
+    if(!checkTokenType(Token::Type::Eof))
     {
-        ret += readToken().getStringValue();
-    }while(!checkTokenType(Token::Type::Eof));
+        do
+        {
+            ret += readToken().getStringValue();
+        }while(!checkTokenType(Token::Type::Eof));
+    }
+    if(ret=="")
+        ret="/";
     return ret;
 }
 
