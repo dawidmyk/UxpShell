@@ -26,7 +26,6 @@ void Shell::interact() {
 			continue;
 		}
 		ex->execute(&command, vars);
-		std::cout<<"\n\nFILE: "<<command.outputFile<<"\n\n";	
 		command.accepted = true;
 		if(command.accepted) { //ta zmienna tak umownie
 			if(command.type == CommandType::new_pipeline) {
