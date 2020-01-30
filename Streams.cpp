@@ -21,6 +21,17 @@ char PipeInputStream::child() {
 	return 1;
 }
 
+void PipeInputStream::readMessage(std::string & message) {
+		message.clear();
+		char i;
+		goto start;
+		while(i != '\n') {
+			message += i;
+			start:
+			readChar(i);
+		}	
+}
+
 
 char PipeOutputStream::child() {
 	dup2(fd, 1);

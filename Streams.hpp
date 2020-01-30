@@ -45,16 +45,7 @@ class PipeInputStream : public InputStream {
 		read(fd, &i, 1);
 	}
 	
-	void readMessage(std::string & message) {
-		message.clear();
-		char i;
-		goto start;
-		while(i != '\n') {
-			message += i;
-			start:
-			readChar(i);
-		}	
-	}
+	void readMessage(std::string & message);
 	
 
 	

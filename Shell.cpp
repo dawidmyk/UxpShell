@@ -32,7 +32,7 @@ void Shell::interact() {
 				Pipeline pipe;
 				PipelineError error = pipe.create(command, vars.getSystemPath());
 				if(error.occur) {
-					printf("Wystąpił błąd\n");
+					error.present();
 				}
 				else {
 					pipe.spawn();
