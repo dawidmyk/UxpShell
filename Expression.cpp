@@ -80,6 +80,7 @@ CommandParseContext* ReservedExpression::execute(CommandParseContext *command, V
 			return command;
 		case token::Token::Type::echo:
 			command->type = CommandType::echo;
+            std::cout<<std::endl<<text<<std::endl;
 			return command;
 		case token::Token::Type::pwd:
 			command->type = CommandType::pwd;

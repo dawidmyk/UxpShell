@@ -129,7 +129,13 @@ std::vector<std::string> Parser::readParams()
 
 std::string Parser::readText()
 {
-    return "echo";
+    std::string ret="";
+    advance();
+    do
+    {
+        ret += readToken().getStringValue();
+    }while(!checkTokenType(Token::Type::Eof));
+    return ret;
 }
 
 Token Parser::readToken()
