@@ -70,6 +70,7 @@ CommandParseContext* ReservedExpression::execute(CommandParseContext *command, V
 	{
 		case token::Token::Type::cd:
 			command->type = CommandType::cd;
+            vars.setActualPath(text);
 			return command;
 		case token::Token::Type::bg:
 			command->type = CommandType::bg;
@@ -82,6 +83,7 @@ CommandParseContext* ReservedExpression::execute(CommandParseContext *command, V
 			return command;
 		case token::Token::Type::pwd:
 			command->type = CommandType::pwd;
+            std::cout<<std::endl<<vars.getActualPath()<<std::endl;
 			return command;
 		case token::Token::Type::jobs:
 			command->type = CommandType::jobs;

@@ -9,10 +9,11 @@ void Shell::interact() {
 		std::stringstream ss;
 		std::string line;
 		parser::Parser p(std::make_unique<Scanner>(ss));
+		prompt();
 		getline(std::cin, line);
 		ss.str(line);
 
-		prompt();
+		
 
 		std::unique_ptr<Expression> ex;
 		try
@@ -35,8 +36,9 @@ void Shell::interact() {
 				else {
 					pipe.spawn();
 					std::pair<std::string, int> result = pipe.join();
+					std::cout<<"join";
 					vars.setLastResult(result.second);
-					if(!last) command.results.push_back(result.first);
+					//if(!last) command.results.push_back(result.first);
 					std::cout << "Oto co nam powiedział potok: " << result.first << std::endl;
 				}
 		
@@ -134,9 +136,9 @@ void Shell::interact() {
 		else if(!last) {
 			++innerIt;
 			if(innerIt == innerEnd) last = true;
-		}*/
+		}
 	}
 	++middleIt;
-	}		
+	}*/		
 	}
 }

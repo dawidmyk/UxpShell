@@ -26,6 +26,7 @@ private:
   std::unique_ptr<Expression> complexCommand();
   std::unique_ptr<Expression> assigmnemntOperation();
   std::string readDirectory();
+  std::string readCD();
   std::string readText();
   std::string readCall();
   std::vector<std::string> readParams();

@@ -38,7 +38,7 @@ std::unique_ptr<Expression> Parser::reservedCommand()
         return std::make_unique<ReservedExpression>(t);
     case Token::Type::cd:
         {
-            const auto dir = readDirectory();
+            const auto dir = readCD();
             return std::make_unique<ReservedExpression>(dir, t);
         }
     case Token::Type::fg: case Token::Type::echo:
@@ -67,6 +67,17 @@ std::unique_ptr<Expression> Parser::complexCommand()
         return std::make_unique<ComplexExpression>(std::move(expr), t);
     requireToken(Token::Type::Eof);
     return std::move(expr);
+}
+
+std::string Parser::readCD()
+{
+    std::string ret="";
+    advance();
+    do
+    {
+        ret += readToken().getStringValue();
+    }while(!checkTokenType(Token::Type::Eof));
+    return ret;
 }
 
 std::string Parser::readDirectory()
@@ -118,7 +129,7 @@ std::vector<std::string> Parser::readParams()
 
 std::string Parser::readText()
 {
-
+    return "echo";
 }
 
 Token Parser::readToken()
@@ -164,6 +175,5 @@ bool Parser::checkTokenType(Token::Type expected) const
 void Parser::advance()
 {
     scanner->readNextToken();
-    std::cout<<scanner->getToken()<<std::endl;
 }
 
