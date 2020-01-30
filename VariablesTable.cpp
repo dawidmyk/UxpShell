@@ -19,7 +19,7 @@ VariablesTable::VariablesTable() {
 VariablesTable::~VariablesTable() {
 	map<string, Variable*>::iterator it = idToVariable.begin();
 	for (; it != idToVariable.end(); it++) {
-		free(it->second);
+		delete it->second;
 	}
 	idToVariable.clear();
 }
@@ -75,6 +75,9 @@ void VariablesTable::setEnvironmentVariable(string nameS, string x) {
     strcpy(value, x.c_str());  
 	
 	setenv(name, value, 1);
+	delete[] name;
+	delete[] value;
+	
 }
 
 string VariablesTable::getEnvironmentVariable(string nameS) { 
@@ -86,6 +89,8 @@ string VariablesTable::getEnvironmentVariable(string nameS) {
 		return string(envVar);
 	else
 		return "";
+		
+	delete[] name;
 }
 
 void VariablesTable::setActualPath(string nameS) {	// funkcja do ustawiania ścieżki względnej lub bezwględnej
@@ -94,7 +99,8 @@ void VariablesTable::setActualPath(string nameS) {	// funkcja do ustawiania ści
 		
 	actualPWD = realpath(name, nullptr);						// funkcja linuxowa do zamiany ścieżki na bezwzględną
 	
-	chdir(actualPWD);											// funkcja systemowa do ustawienia aktualnego katalogu
+	chdir(actualPWD);
+	delete[] name;									// funkcja systemowa do ustawienia aktualnego katalogu
 }
 
 string VariablesTable::getActualPath() {					// funkcja do zwracania naszego aktualnego katalogu
